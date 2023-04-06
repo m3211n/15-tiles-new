@@ -2,18 +2,18 @@ namespace SpriteKind {
     export const Tile = SpriteKind.create()
 }
 function flip15 (directionIncrement: number) {
-    tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex + directionIncrement]
-    tilesIndexes[noTileIndex + directionIncrement] = 15
-    noTileIndex += directionIncrement
-}
-controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (noTileIndex < 12) {
-        flip15(_UP)
-        placeTiles(tilesIndexes)
+    if (directionIncrement == _RIGHT && !(isLeft) || directionIncrement == _LEFT && !(isRight) || (directionIncrement == _DOWN && !(isTop) || directionIncrement == _UP && !(isBottom))) {
+        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex + directionIncrement]
+        tilesIndexes[noTileIndex + directionIncrement] = 15
+        noTileIndex += directionIncrement
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
         scene.cameraShake(4, 500)
     }
+}
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    flip15(_UP)
+    placeTiles(tilesIndexes)
 })
 function placeTiles (indexes: number[]) {
     info.setScore(0)
@@ -34,37 +34,26 @@ function placeTiles (indexes: number[]) {
             X = 0
         }
     }
+    isLeft = playTiles[15].tilemapLocation().column - X0 == 0
+    isRight = playTiles[15].tilemapLocation().column - X0 == 3
+    isTop = playTiles[15].tilemapLocation().row - Y0 == 0
+    isBottom = playTiles[15].tilemapLocation().row - Y0 == 3
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    if ((noTileIndex + 1) % 4 != 0) {
-        flip15(_LEFT)
-        placeTiles(tilesIndexes)
-    } else {
-        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
-        scene.cameraShake(4, 500)
-    }
+    flip15(_LEFT)
+    placeTiles(tilesIndexes)
 })
 info.onScore(16, function () {
     pause(500)
     game.gameOver(true)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    if ((noTileIndex + 4) % 4 != 0) {
-        flip15(_RIGHT)
-        placeTiles(tilesIndexes)
-    } else {
-        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
-        scene.cameraShake(4, 500)
-    }
+    flip15(_RIGHT)
+    placeTiles(tilesIndexes)
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (noTileIndex > 3) {
-        flip15(_DOWN)
-        placeTiles(tilesIndexes)
-    } else {
-        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
-        scene.cameraShake(4, 500)
-    }
+    flip15(_DOWN)
+    placeTiles(tilesIndexes)
 })
 function createTiles () {
     playTiles = [
@@ -86,9 +75,12 @@ function createTiles () {
     sprites.create(assets.image`noTile`, SpriteKind.Tile)
     ]
 }
-function shuffleIndexes (indexes: number[]) {
-    indexesOld = indexes
+function shuffleIndexes () {
+    let indexesOld: number[] = []
     indexesNew = []
+    for (let index = 0; index <= 15; index++) {
+        indexesOld[index] = index
+    }
     for (let index = 0; index <= 15; index++) {
         candidate = indexesOld._pickRandom()
         indexesNew.push(candidate)
@@ -98,13 +90,16 @@ function shuffleIndexes (indexes: number[]) {
 }
 let candidate = 0
 let indexesNew: number[] = []
-let indexesOld: number[] = []
 let playTiles: Sprite[] = []
 let inPlaceIndex = 0
 let Y = 0
 let X = 0
 let Y0 = 0
 let X0 = 0
+let isBottom = false
+let isTop = false
+let isRight = false
+let isLeft = false
 let noTileIndex = 0
 let tilesIndexes: number[] = []
 let _UP = 0
@@ -119,9 +114,6 @@ createTiles()
 info.startCountdown(120)
 scene.setBackgroundColor(12)
 tiles.setCurrentTilemap(tilemap`level1`)
-for (let index = 0; index <= 15; index++) {
-    tilesIndexes[index] = index
-}
-tilesIndexes = shuffleIndexes(tilesIndexes)
+tilesIndexes = shuffleIndexes()
 noTileIndex = tilesIndexes.indexOf(15)
 placeTiles(tilesIndexes)
