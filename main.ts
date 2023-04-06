@@ -1,6 +1,16 @@
 namespace SpriteKind {
     export const Tile = SpriteKind.create()
 }
+controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (noTileIndex < 12) {
+        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex + 4]
+        tilesIndexes[noTileIndex + 4] = 15
+        noTileIndex += 4
+        placeTiles(tilesIndexes)
+    } else {
+        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+    }
+})
 function placeTiles (indexes: number[]) {
     X0 = 3
     Y0 = 2
@@ -14,7 +24,38 @@ function placeTiles (indexes: number[]) {
             X = 0
         }
     }
+    console.log(indexes)
 }
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    if ((noTileIndex + 1) % 4 != 0) {
+        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex + 1]
+        tilesIndexes[noTileIndex + 1] = 15
+        noTileIndex += 1
+        placeTiles(tilesIndexes)
+    } else {
+        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+    }
+})
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    if ((noTileIndex + 4) % 4 != 0) {
+        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex - 1]
+        tilesIndexes[noTileIndex - 1] = 15
+        noTileIndex += -1
+        placeTiles(tilesIndexes)
+    } else {
+        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+    }
+})
+controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (noTileIndex > 3) {
+        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex - 4]
+        tilesIndexes[noTileIndex - 4] = 15
+        noTileIndex += -4
+        placeTiles(tilesIndexes)
+    } else {
+        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+    }
+})
 function createTiles () {
     playTiles = [
     sprites.create(assets.image`tile0`, SpriteKind.Tile),
@@ -53,6 +94,7 @@ let Y = 0
 let X = 0
 let Y0 = 0
 let X0 = 0
+let noTileIndex = 0
 let tilesIndexes: number[] = []
 createTiles()
 info.setScore(0)
@@ -63,4 +105,6 @@ for (let index = 0; index <= 15; index++) {
     tilesIndexes[index] = index
 }
 tilesIndexes = shuffleIndexes(tilesIndexes)
+noTileIndex = tilesIndexes.indexOf(15)
+console.log(noTileIndex)
 placeTiles(tilesIndexes)
