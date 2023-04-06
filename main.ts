@@ -9,22 +9,28 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+        scene.cameraShake(4, 500)
     }
 })
 function placeTiles (indexes: number[]) {
+    info.setScore(0)
     X0 = 3
     Y0 = 2
     X = 0
     Y = 0
+    inPlaceIndex = 0
     for (let value of indexes) {
         tiles.placeOnTile(playTiles[value], tiles.getTileLocation(X + X0, Y + Y0))
+        if (inPlaceIndex == value) {
+            info.changeScoreBy(1)
+        }
         X += 1
+        inPlaceIndex += 1
         if (X == 4) {
             Y += 1
             X = 0
         }
     }
-    console.log(indexes)
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if ((noTileIndex + 1) % 4 != 0) {
@@ -34,7 +40,11 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+        scene.cameraShake(4, 500)
     }
+})
+info.onScore(16, function () {
+    game.gameOver(true)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if ((noTileIndex + 4) % 4 != 0) {
@@ -44,6 +54,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+        scene.cameraShake(4, 500)
     }
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -54,6 +65,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+        scene.cameraShake(4, 500)
     }
 })
 function createTiles () {
@@ -90,6 +102,7 @@ let candidate = 0
 let indexesNew: number[] = []
 let indexesOld: number[] = []
 let playTiles: Sprite[] = []
+let inPlaceIndex = 0
 let Y = 0
 let X = 0
 let Y0 = 0
@@ -97,7 +110,6 @@ let X0 = 0
 let noTileIndex = 0
 let tilesIndexes: number[] = []
 createTiles()
-info.setScore(0)
 info.startCountdown(120)
 scene.setBackgroundColor(12)
 tiles.setCurrentTilemap(tilemap`level1`)
@@ -106,5 +118,4 @@ for (let index = 0; index <= 15; index++) {
 }
 tilesIndexes = shuffleIndexes(tilesIndexes)
 noTileIndex = tilesIndexes.indexOf(15)
-console.log(noTileIndex)
 placeTiles(tilesIndexes)
