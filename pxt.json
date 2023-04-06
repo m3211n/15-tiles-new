@@ -2,7 +2,8 @@
     "name": "15 Tiles",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "animation": "*"
     },
     "files": [
         "main.blocks",
