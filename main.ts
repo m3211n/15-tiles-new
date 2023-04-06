@@ -1,11 +1,14 @@
 namespace SpriteKind {
     export const Tile = SpriteKind.create()
 }
+function flip15 (directionIncrement: number) {
+    tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex + directionIncrement]
+    tilesIndexes[noTileIndex + directionIncrement] = 15
+    noTileIndex += directionIncrement
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (noTileIndex < 12) {
-        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex + 4]
-        tilesIndexes[noTileIndex + 4] = 15
-        noTileIndex += 4
+        flip15(_UP)
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
@@ -34,9 +37,7 @@ function placeTiles (indexes: number[]) {
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     if ((noTileIndex + 1) % 4 != 0) {
-        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex + 1]
-        tilesIndexes[noTileIndex + 1] = 15
-        noTileIndex += 1
+        flip15(_LEFT)
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
@@ -49,9 +50,7 @@ info.onScore(16, function () {
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     if ((noTileIndex + 4) % 4 != 0) {
-        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex - 1]
-        tilesIndexes[noTileIndex - 1] = 15
-        noTileIndex += -1
+        flip15(_RIGHT)
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
@@ -60,9 +59,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (noTileIndex > 3) {
-        tilesIndexes[noTileIndex] = tilesIndexes[noTileIndex - 4]
-        tilesIndexes[noTileIndex - 4] = 15
-        noTileIndex += -4
+        flip15(_DOWN)
         placeTiles(tilesIndexes)
     } else {
         music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
@@ -110,6 +107,14 @@ let Y0 = 0
 let X0 = 0
 let noTileIndex = 0
 let tilesIndexes: number[] = []
+let _UP = 0
+let _LEFT = 0
+let _DOWN = 0
+let _RIGHT = 0
+_RIGHT = -1
+_DOWN = -4
+_LEFT = 1
+_UP = 4
 createTiles()
 info.startCountdown(120)
 scene.setBackgroundColor(12)
