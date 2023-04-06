@@ -7,10 +7,9 @@
     "level1": {
         "id": "level1",
         "mimeType": "application/mkcd-tilemap",
-        "data": "MTAwYTAwMDgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMGUwZTAyMDMwNDAzMDMwNTBlMGUwZTBlMGMwMTAxMDEwMTA2MGUwZTBlMGUwZDAxMDEwMTAxMDgwZTBlMGUwZTBkMDEwMTAxMDEwNjBlMGUwZTBlMGQwMTAxMDEwMTA2MGUxMDBmMTAwYTA5MDkwOTBiMDcwZjExMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
+        "data": "MTAwYTAwMDgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMGQwZDAxMDIwMzAyMDIwNDBkMGQwZDBkMGIwMDAwMDAwMDA1MGQwZDBkMGQwYzAwMDAwMDAwMDcwZDBkMGQwZDBjMDAwMDAwMDAwNTBkMGQwZDBkMGMwMDAwMDAwMDA1MGQwZjBlMGYwOTA4MDgwODBhMDYwZTEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
         "tileset": [
             "myTiles.transparency16",
-            "sprites.dungeon.darkGroundCenter",
             "sprites.dungeon.greenOuterNorthWest",
             "sprites.dungeon.greenOuterNorth0",
             "sprites.dungeon.greenOuterNorth1",
