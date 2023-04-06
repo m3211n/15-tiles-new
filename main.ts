@@ -44,6 +44,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 info.onScore(16, function () {
+    pause(500)
     game.gameOver(true)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
